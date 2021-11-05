@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:laundry_app/constants/colors.dart';
 import 'package:laundry_app/constants/constantsvaribale.dart';
 import 'package:laundry_app/controller/order_controller.dart';
@@ -10,6 +11,7 @@ import 'package:laundry_app/models/order_model.dart';
 import 'package:laundry_app/services/firestore_service.dart';
 import 'package:laundry_app/viewmodels/service_model.dart';
 import 'package:laundry_app/views/views/StyleScheme.dart';
+import 'package:laundry_app/widgets/custom_button.dart';
 import 'package:laundry_app/widgets/custom_dialogebox.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +27,7 @@ class TrackOrderPage extends StatefulWidget {
 
 class _TrackOrderPageState extends State<TrackOrderPage> {
   String statestatus = 'Confirmed';
-
+  double starrating = 0;
   @override
   Widget build(BuildContext context) {
     final orderprovider = Provider.of<OrderProvider>(context, listen: false);
@@ -129,61 +131,43 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
               ),
             ),
 
-            // usertypeprovider.usertype == 'client'
-            //     ? Padding(
-            //         padding: const EdgeInsets.symmetric(
-            //             horizontal: 15.0, vertical: 10.0),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.end,
-            //           children: [
-            //             InkWell(
-            //               // onTap: (){
-            //               //   orderprovider.removeorder(id)
-            //               // },
-            //               child: Container(
-            //                 padding: EdgeInsets.symmetric(
-            //                     vertical: 15, horizontal: 20),
-            //                 decoration: BoxDecoration(
-            //                     borderRadius:
-            //                         BorderRadius.all(Radius.circular(10)),
-            //                     border: Border.all(
-            //                       color: Colors.orange,
-            //                     )),
-            //                 child: Text(
-            //                   "Cancel Order",
-            //                   style:
-            //                       contentStyle.copyWith(color: Colors.orange),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     : SizedBox(
-            //         height: 10.0,
-            //       ),
+            usertypeprovider.usertype == 'client'
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            // orderprovider.removeorder(id)
+                            showRating();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                  color: Colors.black,
+                                )),
+                            child: Text(
+                              "Rate Service",
+                              style: contentStyle.copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox(
+                    height: 10.0,
+                  ),
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   selectedItemColor: Colors.orange,
-      //   iconSize: 30,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       title: Text("Home"),
-      //     ),
-      //     const BottomNavigationBarItem(
-      //         icon: Icon(Icons.track_changes), title: Text("Track Order")),
-      //     const BottomNavigationBarItem(
-      //         icon: Icon(Icons.view_list), title: Text("My Orders")),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.track_changes),
-      //       title: Text("Profile"),
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -314,6 +298,9 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                             setState(() {
                               statestatus = 'Payment';
                             });
+                            final usertypeprovider =
+                                Provider.of<UserType>(context, listen: false);
+
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -325,6 +312,9 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                     elevation: 0,
                                     backgroundColor: Colors.transparent,
                                     child: contentBox(
+                                        child: SizedBox(
+                                          height: 2,
+                                        ),
                                         onTap: () {},
                                         context: context,
                                         title: 'Payment Info',
@@ -376,12 +366,64 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
               ),
             ],
           ),
-          //
+
+          // ButtonWidget(
+          //   btnText: 'Rate',
+          //   onClick: () {
+          //     // _showRatingAppDialog();
+          //     showRating();
+          //   },
+          // )
+          // //
         ],
         //
       ),
     );
   }
+
+  Widget buildRating() => RatingBar.builder(
+        initialRating: starrating,
+        minRating: 1,
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (rating) {
+          print(rating);
+          setState(() {
+            starrating = rating;
+          });
+        },
+      );
+  void showRating() => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(dialogepadding),
+            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            child: Column(
+              children: [
+                contentBox(
+                    onTap: () {},
+                    context: context,
+                    title: 'Service Rating',
+                    subtitle: "Rating:",
+                    amount: starrating.toString(),
+                    text: 'Submit',
+                    child: buildRating()),
+              ],
+            ),
+          ),
+        );
+      });
 
   Widget _profileContent(
       {required String title,

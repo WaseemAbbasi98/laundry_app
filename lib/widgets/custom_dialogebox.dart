@@ -9,6 +9,7 @@ Widget contentBox(
     required String subtitle,
     required String amount,
     required var onTap,
+    required Widget child,
     required String text}) {
   return Stack(
     children: <Widget>[
@@ -61,6 +62,7 @@ Widget contentBox(
                     textAlign: TextAlign.center,
                   ),
                 ),
+                child,
                 // const SizedBox(
                 //   height: 10.0,
                 // ),

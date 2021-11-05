@@ -270,6 +270,9 @@ class _SignInState extends State<SignIn> {
                                                   backgroundColor:
                                                       Colors.transparent,
                                                   child: contentBox(
+                                                      child: SizedBox(
+                                                        height: 2,
+                                                      ),
                                                       context: context,
                                                       title: 'LogIn Error',
                                                       subtitle: error,

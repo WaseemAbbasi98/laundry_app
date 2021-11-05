@@ -26,7 +26,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         // elevation: 0,
-        title: Text("Easy Laundry"),
+        title: Text('Laundry Management System'),
         centerTitle: true,
       ),
       drawer: MainDrawer(),

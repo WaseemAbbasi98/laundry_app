@@ -50,6 +50,7 @@ dependencies:
   google_maps_flutter: ^2.0.11
   flutter_local_notifications: ^6.1.0
   rxdart: ^0.27.1
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:
