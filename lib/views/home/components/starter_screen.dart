@@ -20,12 +20,12 @@ class StarterScreen extends StatelessWidget {
             height: double.infinity,
             decoration: BoxDecoration(
               color: Color.fromRGBO(17, 98, 105, 0.8),
-              image: DecorationImage(
-                  image: AssetImage(
-                    'asset/images/start_bg.jpg',
-                  ),
-                  // scale: 0.5,
-                  fit: BoxFit.fill),
+              // image: DecorationImage(
+              //     image: AssetImage(
+              //       'asset/images/start_bg.jpg',
+              //     ),
+              //     // scale: 0.5,
+              //     fit: BoxFit.fill),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
