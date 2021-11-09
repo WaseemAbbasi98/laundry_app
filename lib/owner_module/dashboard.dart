@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:laundry_app/constants/colors.dart';
 import 'package:laundry_app/controller/job_controller.dart';
 import 'package:laundry_app/models/job_model.dart';
+import 'package:laundry_app/models/order_model.dart';
 import 'package:laundry_app/views/corders/posted_order_details.dart';
 import 'package:laundry_app/views/home/drawer.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
     final jobProvider = Provider.of<PostedJobProvider>(context);
 
     List<String> location;
+    List<String> orderId;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -88,7 +90,8 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                             itemBuilder: (context, index) {
                               location =
                                   (snapshot.data![index].location).split(',');
-
+                              orderId = snapshot.data![index].jobId.split("-");
+                              print(orderId.length);
                               return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0)),
@@ -128,6 +131,38 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 5.0),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 60.0),
+                                            child: Row(
+                                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  'Order Id:',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Quicksand',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 14.0,
+                                                      color: Colors.grey),
+                                                ),
+                                                // SizedBox(
+                                                //   width: 5.0,
+                                                // ),
+                                                Flexible(
+                                                  child: Text(
+                                                    'LMS-${orderId[0]}',
+                                                    // pjobs.offers.toString(),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Quicksand',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12.0,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Center(
                                             child: Container(
                                               margin:
@@ -168,36 +203,6 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                                           SizedBox(
                                             height: 5.0,
                                           ),
-                                          // Center(
-                                          //   child: Container(
-                                          //     margin: EdgeInsets.only(left: 60.0),
-                                          //     child: Row(
-                                          //       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          //       children: [
-                                          //         Text(
-                                          //           'Offers',
-                                          //           style: TextStyle(
-                                          //               fontFamily: 'Quicksand',
-                                          //               fontWeight: FontWeight.bold,
-                                          //               fontSize: 14.0,
-                                          //               color: Colors.grey),
-                                          //         ),
-                                          //         SizedBox(
-                                          //           width: 10.0,
-                                          //         ),
-                                          //         Text(
-                                          //           '20',
-                                          //           // pjobs.offers.toString(),
-                                          //           style: TextStyle(
-                                          //               fontFamily: 'Quicksand',
-                                          //               fontWeight: FontWeight.bold,
-                                          //               fontSize: 12.0,
-                                          //               color: Colors.grey),
-                                          //         ),
-                                          //       ],
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ]),
                                     // SizedBox(height: 15.0),
                                     Expanded(

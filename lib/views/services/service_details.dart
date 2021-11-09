@@ -172,28 +172,13 @@ class _JobdetailState extends State<Jobdetail> {
                   jobprovider.changeDate = formattedDate.toString();
                   //save order ...
                   orderprovider.changeorderby = postername!;
-                  // orderprovider.changeorderjobid = widget.jobs.jobId;
-                  // orderprovider
-                  //         .chageorderto =
-                  //     snapshot
-                  //         .data[index]
-                  //         .senderid;
-                  // orderprovider
-                  //         .changeorderbudget =
-                  //     snapshot
-                  //         .data[index]
-                  //         .budget;
                   orderprovider.changepaymentstatus = 'Due';
                   orderprovider.changestatus = 'active';
                   orderprovider.changeorderbudget = total;
                   orderprovider.changeorderdate = formattedDate.toString();
                   orderprovider.saveorders();
-                  // orderprovider.changeorderjobid = widget.jobs.jobId;
                   jobprovider.savejobs();
                   itemdetailprovider.itemdetail.clear();
-                  // Navigator.pop(context);
-                  // jobprovider.changeloction = ;
-
                   NotificationApi.showNotification(
                       title: 'Order Notification',
                       body: 'Order Save Successfully',

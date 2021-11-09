@@ -2,12 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:laundry_app/constants/colors.dart';
+import 'package:laundry_app/constants/constantsvaribale.dart';
 import 'package:laundry_app/constants/style.dart';
 import 'package:laundry_app/controller/role_controller.dart';
 import 'package:laundry_app/services/authservice.dart';
 import 'package:laundry_app/views/authenticate/sign_in.dart';
 import 'package:laundry_app/widgets/custom_button.dart';
+import 'package:laundry_app/widgets/custom_dialogebox.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -70,6 +73,19 @@ class _SignUpState extends State<SignUp> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
     return (!regex.hasMatch(value)) ? false : true;
+  }
+
+  bool validatePawssword(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
+  bool validatesimpletext(String value) {
+    String pattern = r'^[a-zA-Z]+(\s[a-zA-Z]+)?$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   @override
@@ -178,12 +194,16 @@ class _SignUpState extends State<SignUp> {
                                       labelText: 'Name'),
                                   onChanged: (val) {
                                     setState(() {
+                                      print(validatesimpletext(val));
                                       name = val;
                                     });
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter a name';
+                                    }
+                                    if (validatesimpletext(value) == false) {
+                                      return 'Only letter are accepted..';
                                     } else {
                                       return null;
                                     }
@@ -211,6 +231,9 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter a City';
+                                    }
+                                    if (validatesimpletext(value) == false) {
+                                      return 'Only letter are accepted..';
                                     } else {
                                       return null;
                                     }
@@ -286,12 +309,25 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter  password';
+                                    }
+                                    if (validatePawssword(value) == false) {
+                                      return 'Please enter valid password';
                                     } else {
                                       return null;
                                     }
                                   },
                                 ),
                               ),
+                              FlutterPwValidator(
+                                  controller: passwordcotroller,
+                                  minLength: 8,
+                                  uppercaseCharCount: 1,
+                                  numericCharCount: 1,
+                                  specialCharCount: 1,
+                                  width: 400,
+                                  height: 150,
+                                  successColor: kPrimaryColor,
+                                  onSuccess: () {}),
                               Container(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -343,23 +379,55 @@ class _SignUpState extends State<SignUp> {
                                                 password: password);
                                         useremail = authUser.email;
                                         print(useremail);
+                                        if (iserror) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            dialogepadding),
+                                                  ),
+                                                  elevation: 0,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  child: contentBox(
+                                                      child: SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      context: context,
+                                                      title: 'Register Error',
+                                                      subtitle: error,
+                                                      amount: '',
+                                                      onTap: () {
+                                                        setState(() {
+                                                          iserror = false;
+                                                          error = '';
+                                                        });
+                                                      },
+                                                      text: 'Try Again'),
+                                                );
+                                              });
 
-                                        // usertypeprovider.usertype == 'client'
-                                        //     ? Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //             builder: (context) =>
-                                        //                 HomeDashboard(
-                                        //                   useremail: useremail,
-                                        //                 )),
-                                        //       )
-                                        //     : Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //             builder: (context) =>
-                                        //                 OwnerDashboard(
-                                        //                   showScreen: '',
-                                        //                 )));
+                                          // usertypeprovider.usertype == 'client'
+                                          //     ? Navigator.push(
+                                          //         context,
+                                          //         MaterialPageRoute(
+                                          //             builder: (context) =>
+                                          //                 HomeDashboard(
+                                          //                   useremail: useremail,
+                                          //                 )),
+                                          //       )
+                                          //     : Navigator.push(
+                                          //         context,
+                                          //         MaterialPageRoute(
+                                          //             builder: (context) =>
+                                          //                 OwnerDashboard(
+                                          //                   showScreen: '',
+                                          //
+                                          //         )));
+                                        }
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
